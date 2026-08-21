@@ -1,17 +1,3 @@
-radio.onReceivedNumber(function (receivedNumber) {
-    if (receivedNumber == 10) {
-        sag()
-    }
-    if (receivedNumber == 9) {
-        sol()
-    }
-    if (receivedNumber == 8) {
-        yukarı()
-    }
-    if (receivedNumber == 7) {
-        aşağı()
-    }
-})
 input.onButtonPressed(Button.A, function () {
     sag()
 })
@@ -28,11 +14,74 @@ function yukarı () {
 input.onButtonPressed(Button.B, function () {
     sol()
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    aşağı()
-})
-input.onGesture(Gesture.ThreeG, function () {
-    yukarı()
+radio.onReceivedValue(function (name, value) {
+    if (name == "10") {
+        if (value == 1) {
+            ContinuousServo.turn_off_motor(DigitalPin.P12)
+        } else {
+            ContinuousServo.spin_other_way_with_speed(AnalogPin.P12, açı)
+        }
+    }
+    if (name == "11") {
+        if (value == 1) {
+            ContinuousServo.turn_off_motor(DigitalPin.P12)
+        } else {
+            ContinuousServo.spin_one_way_with_speed(AnalogPin.P12, açı)
+        }
+    }
+    if (name == "13") {
+        if (value == 1) {
+            ContinuousServo.turn_off_motor(DigitalPin.P8)
+        } else {
+            ContinuousServo.spin_one_way_with_speed(AnalogPin.P8, açı)
+        }
+    }
+    if (name == "12") {
+        if (value == 1) {
+            ContinuousServo.turn_off_motor(DigitalPin.P8)
+        } else {
+            ContinuousServo.spin_other_way_with_speed(AnalogPin.P8, açı)
+        }
+    }
+    if (name == "14") {
+        if (value == 1) {
+            basic.showLeds(`
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                `)
+            music.stopAllSounds()
+        } else {
+            basic.showIcon(IconNames.Yes)
+            music.ringTone(175)
+        }
+    }
+    if (name == "15") {
+        if (value == 1) {
+            basic.showLeds(`
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                `)
+            music.stopAllSounds()
+        } else {
+            basic.showString("YS Robotik")
+            music.ringTone(131)
+            music.ringTone(147)
+            music.ringTone(165)
+        }
+    }
+    if (name == "16") {
+        if (value == 1) {
+            music.stopAllSounds()
+        } else {
+            music.play(music.tonePlayable(262, music.beat(BeatFraction.Whole)), music.PlaybackMode.UntilDone)
+        }
+    }
 })
 function aşağı () {
     ContinuousServo.spin_one_way_with_speed(AnalogPin.P12, açı)
@@ -46,6 +95,6 @@ function sag () {
 }
 let açı = 0
 radio.setGroup(1)
-basic.showIcon(IconNames.Heart)
-basic.showIcon(IconNames.SmallHeart)
-açı = 30
+radio.setTransmitPower(7)
+radio.setFrequencyBand(0)
+açı = 50
